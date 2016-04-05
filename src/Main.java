@@ -1,9 +1,12 @@
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
@@ -20,6 +23,7 @@ public class Main {
 				try {
 					Main window = new Main();
 					window.frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -44,6 +48,13 @@ public class Main {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				JOptionPane.showMessageDialog(frame, "Има \"Изход\" бутон бе!");
+				;
+			}
+		});
 
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
