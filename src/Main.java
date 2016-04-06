@@ -124,5 +124,10 @@ public class Main {
 		JLabel label = new JLabel("\u043C\u043B/\u0441.");
 		label.setBounds(245, 29, 46, 14);
 		frame.getContentPane().add(label);
+
+		JLabel label_1 = new JLabel(
+				"\u0417\u0430\u0440\u0435\u0434\u0435\u043D\u0438\u044F\u0442 \u0444\u0430\u0439\u043B \u0435 ");
+		label_1.setBounds(10, 95, 156, 14);
+		frame.getContentPane().add(label_1);
 	}
 }
