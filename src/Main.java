@@ -7,7 +7,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -27,6 +26,7 @@ public class Main {
 	private ButtonGroup bg = new ButtonGroup();
 	private JTextField textField;
 	private JLabel lblLoadedFile;
+	private JTextField textField_1;
 
 	/**
 	 * Launch the application.
@@ -116,14 +116,6 @@ public class Main {
 		bg.add(btnFaster);
 		bg.add(btnSlower);
 
-		JLabel lblSubtitleScreen = new JLabel("test");
-		lblSubtitleScreen.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSubtitleScreen.setForeground(Color.WHITE);
-		lblSubtitleScreen.setBackground(Color.DARK_GRAY);
-		lblSubtitleScreen.setBounds(0, 55, 444, 29);
-		lblSubtitleScreen.setOpaque(true);
-		frame.getContentPane().add(lblSubtitleScreen);
-
 		JCheckBox chckbxRemoveTags = new JCheckBox(
 				"\u041F\u0440\u0435\u043C\u0430\u0445\u043D\u0438 \u0442\u0430\u0433\u043E\u0432\u0435\u0442\u0435");
 		chckbxRemoveTags.setBounds(286, 25, 142, 23);
@@ -150,5 +142,10 @@ public class Main {
 		lbltime.setBackground(Color.GRAY);
 		lbltime.setBounds(120, 83, 201, 35);
 		frame.getContentPane().add(lbltime);
+
+		textField_1 = new JTextField();
+		textField_1.setBounds(0, 55, 444, 29);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
 	}
 }
