@@ -26,6 +26,7 @@ public class Main {
 	private JFrame frame;
 	private ButtonGroup bg = new ButtonGroup();
 	private JTextField textField;
+	private JLabel lblLoadedFile;
 
 	/**
 	 * Launch the application.
@@ -78,16 +79,13 @@ public class Main {
 
 		JButton btnLoad = new JButton("\u0417\u0430\u0440\u0435\u0434\u0438 \u0424\u0430\u0439\u043B");
 		btnLoad.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
-				//File file = new File("")
+				// File file = new File("")
 				JFileChooser chooser = new JFileChooser();
 				chooser.showOpenDialog(null);
 				File f = chooser.getSelectedFile();
-				String filename = f.getAbsolutePath();
-				AbstractButton path = null;
-				path.setText(filename);
-		
-				
+				lblLoadedFile.setText("Зареденият файл е : " + f.getName());
 
 			}
 		});
@@ -140,9 +138,9 @@ public class Main {
 		label.setBounds(245, 29, 46, 14);
 		frame.getContentPane().add(label);
 
-		JLabel lblLoadedFile = new JLabel(
+		lblLoadedFile = new JLabel(
 				"\u0417\u0430\u0440\u0435\u0434\u0435\u043D\u0438\u044F\u0442 \u0444\u0430\u0439\u043B \u0435 ");
-		lblLoadedFile.setBounds(10, 128, 156, 14);
+		lblLoadedFile.setBounds(10, 128, 434, 14);
 		frame.getContentPane().add(lblLoadedFile);
 
 		JLabel lbltime = new JLabel("00:01:09,028 \u0447. \u0434\u043E 00:01:10,321 \u0447.");
