@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Main {
 
@@ -81,9 +82,9 @@ public class Main {
 		btnLoad.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				// File file = new File("")
+				//making browse window
 				JFileChooser chooser = new JFileChooser();
-				chooser.showOpenDialog(null);
+				chooser.showOpenDialog(null);			
 				File f = chooser.getSelectedFile();
 				lblLoadedFile.setText("Зареденият файл е : " + f.getName());
 
