@@ -4,10 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -74,6 +77,15 @@ public class Main {
 		JButton btnLoad = new JButton("\u0417\u0430\u0440\u0435\u0434\u0438 \u0424\u0430\u0439\u043B");
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//File file = new File("")
+				JFileChooser chooser = new JFileChooser();
+				chooser.showOpenDialog(null);
+				File f = chooser.getSelectedFile();
+				String filename = f.getAbsolutePath();
+				AbstractButton path = null;
+				path.setText(filename);
+		
+				
 
 			}
 		});
