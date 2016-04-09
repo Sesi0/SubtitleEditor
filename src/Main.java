@@ -54,7 +54,7 @@ public class Main {
 		frame = new JFrame();
 		frame.setTitle(
 				"\u0420\u0435\u0434\u0430\u043A\u0442\u043E\u0440 \u043D\u0430 \u0441\u0443\u0431\u0442\u0438\u0442\u0440\u0438");
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 203);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -125,9 +125,17 @@ public class Main {
 		label.setBounds(245, 29, 46, 14);
 		frame.getContentPane().add(label);
 
-		JLabel label_1 = new JLabel(
+		JLabel lblLoadedFile = new JLabel(
 				"\u0417\u0430\u0440\u0435\u0434\u0435\u043D\u0438\u044F\u0442 \u0444\u0430\u0439\u043B \u0435 ");
-		label_1.setBounds(10, 95, 156, 14);
-		frame.getContentPane().add(label_1);
+		lblLoadedFile.setBounds(10, 128, 156, 14);
+		frame.getContentPane().add(lblLoadedFile);
+
+		JLabel lbltime = new JLabel("00:01:09,028 \u0447. \u0434\u043E 00:01:10,321 \u0447.");
+		lbltime.setOpaque(true);
+		lbltime.setHorizontalAlignment(SwingConstants.CENTER);
+		lbltime.setForeground(Color.WHITE);
+		lbltime.setBackground(Color.GRAY);
+		lbltime.setBounds(120, 83, 201, 35);
+		frame.getContentPane().add(lbltime);
 	}
 }
