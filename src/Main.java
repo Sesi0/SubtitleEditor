@@ -71,27 +71,27 @@ public class Main {
 		toolBar.setBackground(UIManager.getColor("Button.background"));
 		frame.getContentPane().add(toolBar);
 
-		JButton button = new JButton("\u0417\u0430\u0440\u0435\u0434\u0438 \u0424\u0430\u0439\u043B");
-		button.addActionListener(new ActionListener() {
+		JButton btnLoad = new JButton("\u0417\u0430\u0440\u0435\u0434\u0438 \u0424\u0430\u0439\u043B");
+		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
 			}
 		});
-		toolBar.add(button);
+		toolBar.add(btnLoad);
 
-		JButton button_1 = new JButton("\u041E\u0442\u0432\u043E\u0440\u0438 \u0424\u0430\u0439\u043B");
-		toolBar.add(button_1);
+		JButton btnOpen = new JButton("\u041E\u0442\u0432\u043E\u0440\u0438 \u0424\u0430\u0439\u043B");
+		toolBar.add(btnOpen);
 
-		JButton button_2 = new JButton("\u0417\u0430\u043F\u0438\u0448\u0438");
-		toolBar.add(button_2);
+		JButton btnSave = new JButton("\u0417\u0430\u043F\u0438\u0448\u0438");
+		toolBar.add(btnSave);
 
-		JButton button_3 = new JButton("\u0418\u0437\u0445\u043E\u0434");
-		button_3.addActionListener(new ActionListener() {
+		JButton btnExit = new JButton("\u0418\u0437\u0445\u043E\u0434");
+		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
 			}
 		});
-		toolBar.add(button_3);
+		toolBar.add(btnExit);
 
 		JRadioButton btnFaster = new JRadioButton("\u0417\u0430\u0431\u044A\u0440\u0437\u0430\u0439");
 		btnFaster.setBounds(10, 25, 94, 23);
