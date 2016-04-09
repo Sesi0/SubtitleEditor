@@ -24,9 +24,10 @@ public class Main {
 
 	private JFrame frame;
 	private ButtonGroup bg = new ButtonGroup();
-	private JTextField textField;
+	private JTextField tfMlSeconds;
 	private JLabel lblLoadedFile;
-	private JTextField textField_1;
+	private JTextField tfScreen;
+	private File GlobalFile;
 
 	/**
 	 * Launch the application.
@@ -81,11 +82,12 @@ public class Main {
 		btnLoad.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				// File file = new File("")
+				// Making browse window
 				JFileChooser chooser = new JFileChooser();
 				chooser.showOpenDialog(null);
 				File f = chooser.getSelectedFile();
 				lblLoadedFile.setText("Зареденият файл е : " + f.getName());
+				//
 
 			}
 		});
@@ -121,10 +123,10 @@ public class Main {
 		chckbxRemoveTags.setBounds(286, 25, 142, 23);
 		frame.getContentPane().add(chckbxRemoveTags);
 
-		textField = new JTextField();
-		textField.setBounds(193, 26, 50, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		tfMlSeconds = new JTextField();
+		tfMlSeconds.setBounds(193, 26, 50, 20);
+		frame.getContentPane().add(tfMlSeconds);
+		tfMlSeconds.setColumns(10);
 
 		JLabel label = new JLabel("\u043C\u043B/\u0441.");
 		label.setBounds(245, 29, 46, 14);
@@ -143,9 +145,22 @@ public class Main {
 		lbltime.setBounds(120, 83, 201, 35);
 		frame.getContentPane().add(lbltime);
 
-		textField_1 = new JTextField();
-		textField_1.setBounds(0, 55, 444, 29);
-		frame.getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		tfScreen = new JTextField();
+		tfScreen.setBounds(0, 55, 444, 29);
+		frame.getContentPane().add(tfScreen);
+		tfScreen.setColumns(10);
+
+		JButton btnPrevious = new JButton("\u041F\u0440\u0435\u0434\u0438\u0448\u0435\u043D");
+		btnPrevious.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+		btnPrevious.setBounds(10, 94, 100, 23);
+		frame.getContentPane().add(btnPrevious);
+
+		JButton btnNext = new JButton("\u0421\u043B\u0435\u0434\u0432\u0430\u0449");
+		btnNext.setBounds(331, 94, 103, 23);
+		frame.getContentPane().add(btnNext);
 	}
 }
