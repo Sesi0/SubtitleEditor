@@ -82,7 +82,7 @@ public class Main {
 		JButton button_1 = new JButton("\u041E\u0442\u0432\u043E\u0440\u0438 \u0424\u0430\u0439\u043B");
 		toolBar.add(button_1);
 
-		JButton button_2 = new JButton("\u0417\u0430\u043F\u0438\u0448\u04384");
+		JButton button_2 = new JButton("\u0417\u0430\u043F\u0438\u0448\u0438");
 		toolBar.add(button_2);
 
 		JButton button_3 = new JButton("\u0418\u0437\u0445\u043E\u0434");
@@ -108,7 +108,7 @@ public class Main {
 		lblSubtitleScreen.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSubtitleScreen.setForeground(Color.WHITE);
 		lblSubtitleScreen.setBackground(Color.DARK_GRAY);
-		lblSubtitleScreen.setBounds(0, 55, 434, 29);
+		lblSubtitleScreen.setBounds(0, 55, 444, 29);
 		lblSubtitleScreen.setOpaque(true);
 		frame.getContentPane().add(lblSubtitleScreen);
 
