@@ -82,7 +82,6 @@ public class Main {
 		btnLoad.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-<<<<<<< HEAD
 				// making browse window
 				JFileChooser chooser = new JFileChooser();
 				chooser.showOpenDialog(null);
@@ -93,14 +92,6 @@ public class Main {
 				} else {
 					lblLoadedFile.setText("Зареденият файл е : " + f.getName());
 				}
-=======
-				// Making browse window
-				JFileChooser chooser = new JFileChooser();
-				chooser.showOpenDialog(null);
-				File f = chooser.getSelectedFile();
-				lblLoadedFile.setText("Зареденият файл е : " + f.getName());
-				//
->>>>>>> 30678fb4e7284d382429f0eb3e16933a62de19ba
 
 			}
 		});
