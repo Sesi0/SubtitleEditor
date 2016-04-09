@@ -88,7 +88,7 @@ public class Main {
 				File f = chooser.getSelectedFile();
 				String name = f.getName();
 				if (name.endsWith(".srt") == false && name.endsWith(".sub") == false) {
-					JOptionPane.showMessageDialog(null, "Моля изберете \".srt\" файл");
+					JOptionPane.showMessageDialog(null, "Моля изберете \".srt или .sub\" файл!");
 				} else {
 					lblLoadedFile.setText("Зареденият файл е : " + f.getName());
 				}
