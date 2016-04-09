@@ -82,20 +82,34 @@ public class Main {
 		btnLoad.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				//making browse window
+				// making browse window
 				JFileChooser chooser = new JFileChooser();
-				chooser.showOpenDialog(null);			
+				chooser.showOpenDialog(null);
 				File f = chooser.getSelectedFile();
-				lblLoadedFile.setText("Зареденият файл е : " + f.getName());
+				String name = f.getName();
+				if (name.endsWith(".srt") == false && name.endsWith(".sub") == false) {
+					JOptionPane.showMessageDialog(null, "Моля изберете \".srt\" файл");
+				} else {
+					lblLoadedFile.setText("Зареденият файл е : " + f.getName());
+				}
 
 			}
 		});
 		toolBar.add(btnLoad);
 
 		JButton btnOpen = new JButton("\u041E\u0442\u0432\u043E\u0440\u0438 \u0424\u0430\u0439\u043B");
+		btnOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
 		toolBar.add(btnOpen);
 
 		JButton btnSave = new JButton("\u0417\u0430\u043F\u0438\u0448\u0438");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		toolBar.add(btnSave);
 
 		JButton btnExit = new JButton("\u0418\u0437\u0445\u043E\u0434");
