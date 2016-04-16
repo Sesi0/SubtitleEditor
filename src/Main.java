@@ -6,6 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.util.Scanner;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -19,6 +25,10 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.JTextArea;
+import javax.swing.JPanel;
+import java.awt.Panel;
+import java.awt.SystemColor;
 
 public class Main {
 
@@ -27,11 +37,13 @@ public class Main {
 	private JTextField tfMlSeconds;
 	private JLabel lblLoadedFile;
 	private JTextField tfScreen;
-	private File GlobalFile;
+	public static File GlobalFile;
+	File temp;
 
 	/**
 	 * Launch the application.
 	 */
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -82,15 +94,32 @@ public class Main {
 		btnLoad.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
+
 				// making browse window
 				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Load File");
 				chooser.showOpenDialog(null);
-				File f = chooser.getSelectedFile();
-				String name = f.getName();
+				GlobalFile = chooser.getSelectedFile();
+
+				Scanner fileReader;
+				try {
+					fileReader = new Scanner(GlobalFile);
+					temp = new File("temp");
+					PrintStream fw = new PrintStream(temp);
+					while (fileReader.hasNextLine()) {
+						fw.println(fileReader.nextLine());
+
+					}			
+					fw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+
+				String name = GlobalFile.getName();
 				if (name.endsWith(".srt") == false && name.endsWith(".sub") == false) {
 					JOptionPane.showMessageDialog(null, "Моля изберете \".srt или .sub\" файл!");
 				} else {
-					lblLoadedFile.setText("Зареденият файл е : " + f.getName());
+					lblLoadedFile.setText("Зареденият файл е : " + GlobalFile.getName());
 				}
 
 			}
@@ -100,7 +129,12 @@ public class Main {
 		JButton btnOpen = new JButton("\u041E\u0442\u0432\u043E\u0440\u0438 \u0424\u0430\u0439\u043B");
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				// Frame1 frame1 = new Frame1();
+				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Open File");
+				chooser.showOpenDialog(null);
+				GlobalFile = chooser.getSelectedFile();
+				Frame1.openFrame();
 			}
 		});
 		toolBar.add(btnOpen);
@@ -108,6 +142,23 @@ public class Main {
 		JButton btnSave = new JButton("\u0417\u0430\u043F\u0438\u0448\u0438");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				JFileChooser fs = new JFileChooser();
+				fs.setDialogTitle("Save a File");
+				fs.setFileFilter(new FileTypeFilter(".srt", "Subtitle File"));
+				fs.setFileFilter(new FileTypeFilter(".sub", "Subtitle File"));
+				fs.showSaveDialog(null);
+				PrintStream fileWriter;
+				try {
+					fileWriter = new PrintStream(fs.getSelectedFile());
+					Scanner fr = new Scanner(temp);
+					while(fr.hasNextLine()){
+						fileWriter.println(fr.nextLine());
+					}
+
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		toolBar.add(btnSave);
