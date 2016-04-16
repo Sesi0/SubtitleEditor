@@ -154,18 +154,14 @@ public class Main {
 		btnNext.setEnabled(false);
 		btnNext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (entries == null) {
-					JOptionPane.showMessageDialog(null, "Не сте заредили файл!");
+				if (Id == entries.size() - 1) {
+					JOptionPane.showMessageDialog(null, "Това е последният текст!");
 				} else {
-					if (Id == entries.size() - 1) {
-						JOptionPane.showMessageDialog(null, "Това е последният текст!");
-					} else {
-						Id++;
-						screen();
-					}
+					Id++;
+					screen();
 				}
-
 			}
+
 		});
 		btnNext.setBounds(331, 116, 103, 23);
 		frame.getContentPane().add(btnNext);
