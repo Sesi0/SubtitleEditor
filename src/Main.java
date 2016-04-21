@@ -6,7 +6,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -29,7 +32,7 @@ public class Main {
 	private JTextField tfMlSeconds;
 	private JLabel lblLoadedFile;
 	private JLabel lbltime;
-	private File GlobalFile;
+	public static File GlobalFile;
 	private Sub subtitle;
 	private List<String> entries;
 	private int Id;
@@ -57,6 +60,19 @@ public class Main {
 	 */
 	public Main() {
 		initialize();
+	}
+
+	public void removeTags() {
+		for (int i = 0; i < entries.size(); i++) {
+			if (entries.get(i).contains("<i>") && entries.get(i).contains("</i>")) {
+				entries.set(i, entries.get(i).replaceAll("<i>", ""));
+				entries.set(i, entries.get(i).replaceAll("</i>", ""));
+			} else if (entries.get(i).contains("<b>") && entries.get(i).contains("</b>")) {
+				entries.set(i, entries.get(i).replaceAll("<b>", ""));
+				entries.set(i, entries.get(i).replaceAll("</b>", ""));
+			}
+		}
+
 	}
 
 	public void screen() {
@@ -141,6 +157,12 @@ public class Main {
 					if (Id == 0) {
 						JOptionPane.showMessageDialog(null, "Това е първия текст!");
 					} else {
+						String[] attributes = entries.get(Id).split("\n");
+						String text = "";
+						for (int i = 0; i < 2; i++) {
+							text += attributes[i] + "\n";
+						}
+						entries.set(Id - 1, text + epScreen.getText());
 						Id--;
 						screen();
 					}
@@ -157,6 +179,12 @@ public class Main {
 				if (Id == entries.size() - 1) {
 					JOptionPane.showMessageDialog(null, "Това е последният текст!");
 				} else {
+					String[] attributes = entries.get(Id).split("\n");
+					String text = "";
+					for (int i = 0; i < 2; i++) {
+						text += attributes[i] + "\n";
+					}
+					entries.set(Id - 1, text + epScreen.getText());
 					Id++;
 					screen();
 				}
@@ -180,7 +208,12 @@ public class Main {
 		JButton btnOpen = new JButton("\u041E\u0442\u0432\u043E\u0440\u0438 \u0424\u0430\u0439\u043B");
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				// Frame1 frame1 = new Frame1();
+				JFileChooser chooser = new JFileChooser();
+				chooser.setDialogTitle("Open File");
+				chooser.showOpenDialog(null);
+				GlobalFile = chooser.getSelectedFile();
+				OpenFileScreenFrame.openFrame();
 			}
 		});
 
@@ -220,7 +253,31 @@ public class Main {
 		JButton btnSave = new JButton("\u0417\u0430\u043F\u0438\u0448\u0438");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				JFileChooser fs = new JFileChooser();
+				fs.setDialogTitle("Запази файл");
+				fs.setFileFilter(new FileTypeFilter(".srt", "Subtitle File"));
+				fs.setFileFilter(new FileTypeFilter(".sub", "Subtitle File"));
+				fs.showSaveDialog(null);
+				PrintStream fileWriter;
+				Scanner fr = null;
+				try {
+					if (chckbxRemoveTags.isSelected()) {
+						removeTags();
+					}
+					fileWriter = new PrintStream(fs.getSelectedFile());
+					fr = new Scanner(GlobalFile);
+					while (fr.hasNextLine()) {
+						fileWriter.println(fr.nextLine());
+					}
+
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} finally {
+					fr.close();
+				}
 			}
+
 		});
 		toolBar.add(btnSave);
 
