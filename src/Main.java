@@ -141,7 +141,7 @@ public class Main {
 		try {
 			eTF = new PrintStream(GlobalFile);
 			for (int i = 0; i < entries.size(); i++) {
-				eTF.println(entries.get(i));
+				eTF.println(entries.get(i) + "\n");
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -291,9 +291,8 @@ public class Main {
 				// Check for subtitle file
 				if (chooser.getSelectedFile() == null) {
 					JOptionPane.showMessageDialog(null, "Не намирам файл!");
-				} else if (chooser.getSelectedFile().getName().endsWith(".srt") == false
-						&& chooser.getSelectedFile().getName().endsWith(".sub") == false) {
-					JOptionPane.showMessageDialog(null, "Моля изберете \".srt или .sub\" файл!");
+				} else if (chooser.getSelectedFile().getName().endsWith(".srt") == false) {
+					JOptionPane.showMessageDialog(null, "Моля изберете \".srt\" файл!");
 
 				} else {
 					// Making file into raw content and enable buttons
@@ -342,7 +341,6 @@ public class Main {
 				JFileChooser fs = new JFileChooser();
 				fs.setDialogTitle("Запази файл");
 				fs.setFileFilter(new FileTypeFilter(".srt", "Subtitle File"));
-				fs.setFileFilter(new FileTypeFilter(".sub", "Subtitle File"));
 				fs.showSaveDialog(null);
 				if (!GlobalFile.exists() || fs.getSelectedFile() == null) {
 					JOptionPane.showMessageDialog(null, "Не намирам файл!");
@@ -352,13 +350,9 @@ public class Main {
 						entriesToFile();
 						PrintStream fileWriter = null;
 						Scanner fr = null;
-
 						try {
 
-							fileWriter = new PrintStream(fs.getSelectedFile());
-							{
-
-							}
+							fileWriter = new PrintStream(fs.getSelectedFile() + ".srt");
 							fr = new Scanner(GlobalFile);
 							while (fr.hasNextLine()) {
 								fileWriter.println(fr.nextLine());
