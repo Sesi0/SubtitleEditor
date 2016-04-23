@@ -10,6 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -62,6 +65,54 @@ public class Main {
 		initialize();
 	}
 
+	private static Pattern pattern = Pattern.compile("(\\d{2}):(\\d{2}):(\\d{2}),(\\d{3})");
+
+	public static long dateParseRegExp(String period) {
+		Matcher matcher = pattern.matcher(period);
+		if (matcher.matches()) {
+			return Long.parseLong(matcher.group(1)) * 3600000L + Long.parseLong(matcher.group(2)) * 60000
+					+ Long.parseLong(matcher.group(3)) * 1000 + Long.parseLong(matcher.group(4));
+		} else {
+			throw new IllegalArgumentException("Invalid format " + period);
+		}
+	}
+
+	private static String formatInterval(final long l) {
+		final long hr = TimeUnit.MILLISECONDS.toHours(l);
+		final long min = TimeUnit.MILLISECONDS.toMinutes(l - TimeUnit.HOURS.toMillis(hr));
+		final long sec = TimeUnit.MILLISECONDS
+				.toSeconds(l - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min));
+		final long ms = TimeUnit.MILLISECONDS.toMillis(
+				l - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min) - TimeUnit.SECONDS.toMillis(sec));
+		return String.format("%02d:%02d:%02d,%03d", hr, min, sec, ms);
+	}
+
+	public void synchTimeForward(long ms) {
+		String[] attributes;
+		String StartTime;
+		String EndTime;
+		String text = "";
+		for (int i = 0; i < entries.size(); i++) {
+
+			attributes = entries.get(i).split("\n");
+			StartTime = formatInterval(dateParseRegExp(attributes[1].substring(0, 12)) + ms);
+			EndTime = formatInterval(dateParseRegExp(attributes[1].substring(17, 29)) + ms);
+			if (dateParseRegExp(attributes[1].substring(0, 12)) + ms < 0) {
+				StartTime = "00:00:00,000";
+			}
+			attributes[1] = StartTime + " --> " + EndTime;
+			for (int j = 0; j < attributes.length; j++) {
+				text += attributes[j] + "\n";
+			}
+			entries.set(i, text);
+			text = "";
+		}
+	}
+
+	public void synchTimeBackwards(long ms) {
+		synchTimeForward(-ms);
+	}
+
 	public void removeTags() {
 		for (int i = 0; i < entries.size(); i++) {
 			if (entries.get(i).contains("<i>") && entries.get(i).contains("</i>")) {
@@ -83,6 +134,21 @@ public class Main {
 		}
 		epScreen.setText(text);
 		lbltime.setText(attributes[1].substring(0, 12) + " до " + attributes[1].substring(18, attributes[1].length()));
+	}
+
+	public void entriesToFile() {
+		PrintStream eTF = null;
+		try {
+			eTF = new PrintStream(GlobalFile);
+			for (int i = 0; i < entries.size(); i++) {
+				eTF.println(entries.get(i));
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			eTF.close();
+		}
 	}
 
 	/**
@@ -162,7 +228,7 @@ public class Main {
 						for (int i = 0; i < 2; i++) {
 							text += attributes[i] + "\n";
 						}
-						entries.set(Id - 1, text + epScreen.getText());
+						entries.set(Id, text + epScreen.getText());
 						Id--;
 						screen();
 					}
@@ -184,7 +250,7 @@ public class Main {
 					for (int i = 0; i < 2; i++) {
 						text += attributes[i] + "\n";
 					}
-					entries.set(Id - 1, text + epScreen.getText());
+					entries.set(Id, text + epScreen.getText());
 					Id++;
 					screen();
 				}
@@ -208,7 +274,6 @@ public class Main {
 		JButton btnOpen = new JButton("\u041E\u0442\u0432\u043E\u0440\u0438 \u0424\u0430\u0439\u043B");
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Frame1 frame1 = new Frame1();
 				JFileChooser chooser = new JFileChooser();
 				chooser.setDialogTitle("Open File");
 				chooser.showOpenDialog(null);
@@ -221,15 +286,17 @@ public class Main {
 		btnLoad.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				// Making browse window
 				JFileChooser chooser = new JFileChooser();
 				chooser.showOpenDialog(null);
 				// Check for subtitle file
-				if (chooser.getSelectedFile().getName().endsWith(".srt") == false
+				if (chooser.getSelectedFile() == null) {
+					JOptionPane.showMessageDialog(null, "Не намирам файл!");
+				} else if (chooser.getSelectedFile().getName().endsWith(".srt") == false
 						&& chooser.getSelectedFile().getName().endsWith(".sub") == false) {
 					JOptionPane.showMessageDialog(null, "Моля изберете \".srt или .sub\" файл!");
+
 				} else {
-					// Making file into raw content
+					// Making file into raw content and enable buttons
 					GlobalFile = chooser.getSelectedFile();
 					subtitle = new Sub(GlobalFile);
 					entries = subtitle.entries();
@@ -253,28 +320,56 @@ public class Main {
 		JButton btnSave = new JButton("\u0417\u0430\u043F\u0438\u0448\u0438");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (chckbxRemoveTags.isSelected()) {
+					removeTags();
+				}
+				if (!tfMlSeconds.getText().isEmpty() && btnFaster.isSelected()) {
+					try {
+						synchTimeForward(Math.abs(Long.parseLong(tfMlSeconds.getText())));
+					} catch (NumberFormatException e2) {
+						JOptionPane.showMessageDialog(null, "Моля въведете валидно число!");
+					}
+
+				}
+				if (!tfMlSeconds.getText().isEmpty() && btnSlower.isSelected()) {
+					try {
+						synchTimeBackwards((Math.abs(Long.parseLong(tfMlSeconds.getText()))));
+					} catch (NumberFormatException e2) {
+						JOptionPane.showMessageDialog(null, "Моля въведете валидно число!");
+					}
+				}
 
 				JFileChooser fs = new JFileChooser();
 				fs.setDialogTitle("Запази файл");
 				fs.setFileFilter(new FileTypeFilter(".srt", "Subtitle File"));
 				fs.setFileFilter(new FileTypeFilter(".sub", "Subtitle File"));
 				fs.showSaveDialog(null);
-				PrintStream fileWriter;
-				Scanner fr = null;
-				try {
-					if (chckbxRemoveTags.isSelected()) {
-						removeTags();
-					}
-					fileWriter = new PrintStream(fs.getSelectedFile());
-					fr = new Scanner(GlobalFile);
-					while (fr.hasNextLine()) {
-						fileWriter.println(fr.nextLine());
-					}
+				if (!GlobalFile.exists() || fs.getSelectedFile() == null) {
+					JOptionPane.showMessageDialog(null, "Не намирам файл!");
+				} else {
 
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				} finally {
-					fr.close();
+					{
+						entriesToFile();
+						PrintStream fileWriter = null;
+						Scanner fr = null;
+
+						try {
+
+							fileWriter = new PrintStream(fs.getSelectedFile());
+							{
+
+							}
+							fr = new Scanner(GlobalFile);
+							while (fr.hasNextLine()) {
+								fileWriter.println(fr.nextLine());
+							}
+
+						} catch (FileNotFoundException e1) {
+							JOptionPane.showMessageDialog(null, "Не намирам файл!");
+						} finally {
+							fileWriter.close();
+						}
+					}
 				}
 			}
 
@@ -283,6 +378,7 @@ public class Main {
 
 		JButton btnExit = new JButton("\u0418\u0437\u0445\u043E\u0434");
 		btnExit.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
 			}
